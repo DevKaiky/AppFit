@@ -1,10 +1,16 @@
 <?php
 $usuario = ($parametro != null) ? $parametro[0] : null;
-$actionUrl = "index.php?param=Usuario/salvar";
 ?>
 
-<h2><?= ($usuario) ? 'Editar Usuário' : 'Cadastrar Novo Usuário' ?></h2>
-<form method="POST" action="<?= $actionUrl ?>">
+<h2>Meu Perfil</h2>
+
+<?php
+if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
+    echo '<p style="color: green;">Seu perfil foi atualizado com sucesso!</p>';
+}
+?>
+
+<form method="POST" action="index.php?param=Usuario/salvar">
     <input type="hidden" name="id" value="<?= ($usuario) ? htmlspecialchars($usuario['id']) : '' ?>">
 
     <label for="nome">Nome:</label><br>
@@ -15,12 +21,10 @@ $actionUrl = "index.php?param=Usuario/salvar";
     <input type="email" id="email" name="email" value="<?= ($usuario) ? htmlspecialchars($usuario['email']) : '' ?>" required>
     <br><br>
 
-    <label for="senha">Senha:</label><br>
-    <input type="password" id="senha" name="senha" <?= ($usuario) ? '' : 'required' ?>>
-    <?php if ($usuario): ?>
-        <small>(Deixe em branco para não alterar)</small>
-    <?php endif; ?>
+    <label for="senha">Nova Senha:</label><br>
+    <input type="password" id="senha" name="senha">
+    <small>(Deixe em branco para não alterar a senha)</small>
     <br><br>
 
-    <input type="submit" value="Salvar">
+    <input type="submit" value="Salvar Alterações">
 </form>

@@ -1,24 +1,23 @@
 <a href="index.php?param=Usuario/formulario">Cadastrar Novo Usuário</a>
 
-<table border="1" width="100%">
-    <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>Data de Criação</th>
-        <th>Ações</th>
+<table border="1" width="100%" style="margin-top: 15px; border-collapse: collapse;">
+    <tr style="background-color: #f2f2f2;">
+        <th style="padding: 8px;">ID</th>
+        <th style="padding: 8px;">Nome</th>
+        <th style="padding: 8px;">Email</th>
+        <th style="padding: 8px;">Data de Criação</th>
+        <th style="padding: 8px;">Ações</th>
     </tr>
 <?php
-// A variável $parametro é passada pelo método layout() do template
 if (!empty($parametro)) {
     foreach ($parametro as $usuario) {
     ?>
      <tr>
-     <td><?= htmlspecialchars($usuario['id']) ?></td>
-     <td><?= htmlspecialchars($usuario['nome']) ?></td>
-     <td><?= htmlspecialchars($usuario['email']) ?></td>
-     <td><?= htmlspecialchars(date('d/m/Y H:i:s', strtotime($usuario['data_criacao']))) ?></td>
-     <td>
+     <td style="padding: 8px;"><?= htmlspecialchars($usuario['id']) ?></td>
+     <td style="padding: 8px;"><?= htmlspecialchars($usuario['nome']) ?></td>
+     <td style="padding: 8px;"><?= htmlspecialchars($usuario['email']) ?></td>
+     <td style="padding: 8px;"><?= htmlspecialchars(date('d/m/Y H:i:s', strtotime($usuario['data_criacao']))) ?></td>
+     <td style="padding: 8px;">
         <a href='index.php?param=Usuario/formulario&id=<?= $usuario['id'] ?>'>Alterar</a>
         <a href='index.php?param=Usuario/excluir&id=<?= $usuario['id'] ?>' onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
      </td>
@@ -26,7 +25,7 @@ if (!empty($parametro)) {
     <?php
     }
 } else {
-    echo "<tr><td colspan='5'>Nenhum usuário encontrado.</td></tr>";
+    echo "<tr><td colspan='5' style='padding: 8px; text-align: center;'>Nenhum usuário encontrado.</td></tr>";
 }
 ?>
 </table>

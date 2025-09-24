@@ -1,4 +1,7 @@
 <?php
+// Inicia a sessão em todas as páginas
+session_start();
+
 // Ativa a exibição de erros para facilitar o desenvolvimento
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -10,9 +13,7 @@ include 'generic/Autoload.php';
 use generic\Controller;
 
 // Define uma rota padrão caso o parâmetro não seja passado
-$rota = $_GET["param"] ?? 'Usuario/listar';
+$rota = $_GET["param"] ?? 'Auth/mostrarFormularioLogin';
 
 $controller = new Controller();
 $controller->verificarChamadas($rota);
-
-?>

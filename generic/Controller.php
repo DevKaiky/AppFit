@@ -10,8 +10,14 @@ class Controller {
             'Usuario/formulario' => new Acao( 'UsuarioController','formulario'),
             'Usuario/salvar' => new Acao( 'UsuarioController','salvar'),
             'Usuario/excluir' => new Acao( 'UsuarioController','excluir'),
+            'Usuario/perfil' => new Acao('UsuarioController', 'perfil'),
 
-            // Adicione outras rotas aqui (ex: Desafio/listar)
+            // Rotas de Autenticação
+            'Auth/mostrarFormularioLogin' => new Acao('AuthController', 'mostrarFormularioLogin'),
+            'Auth/login' => new Acao('AuthController', 'login'),
+            'Auth/logout' => new Acao('AuthController', 'logout'),
+
+            // Futuras rotas do seu parceiro (ex: Desafio/listar)
         ];
     }
     public function verificarChamadas($rota){
