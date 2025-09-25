@@ -1,55 +1,82 @@
 <?php
 namespace dao\mysql;
 
-class DesafioDAO {
-    private $conn;
+use generic\MysqlFactory;
 
-    public function __construct($conn) {
-        $this->conn = $conn;
-    }
+class DesafioDAO extends MysqlFactory {
 
     // Listar todos os desafios
     public function listarTodos() {
         $sql = "SELECT * FROM desafios";
-        $result = $this->conn->query($sql);
-        return $result->fetch_all(MYSQLI_ASSOC);
+        return $this->banco->executar($sql);
     }
 
-    // Salvar novo desafio
+    // Salvar novo desafio ou atualizar um existente
     public function salvar($dados) {
-        $stmt = $this->conn->prepare("INSERT INTO desafios (titulo, descricao, nivel) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $dados['titulo'], $dados['descricao'], $dados['nivel']);
-        $stmt->execute();
-        return $this->conn->insert_id;
+        if (isset($dados['id']) && !empty($dados['id'])) {
+            // Atualizar
+            $sql = "UPDATE desafios SET titulo = :titulo, descricao = :descricao, nivel = :nivel WHERE id = :id";
+            $param = [
+                ':titulo' => $dados['titulo'],
+                ':descricao' => $dados['descricao'],
+                ':nivel' => $dados['nivel'],
+                ':id' => $dados['id']
+            ];
+        } else {
+            // Inserir
+            $sql = "INSERT INTO desafios (titulo, descricao, nivel) VALUES (:titulo, :descricao, :nivel)";
+            $param = [
+                ':titulo' => $dados['titulo'],
+                ':descricao' => $dados['descricao'],
+                ':nivel' => $dados['nivel']
+            ];
+        }
+        return $this->banco->executar($sql, $param);
     }
 
     // Buscar desafio por ID
     public function listarId($id) {
-        $stmt = $this->conn->prepare("SELECT * FROM desafios WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        $sql = "SELECT * FROM desafios WHERE id = :id";
+        $param = [':id' => $id];
+        $resultado = $this->banco->executar($sql, $param);
+        return $resultado ? $resultado[0] : false;
     }
 
     // Excluir desafio
     public function excluir($id) {
-        $stmt = $this->conn->prepare("DELETE FROM desafios WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+        $sql = "DELETE FROM desafios WHERE id = :id";
+        $param = [':id' => $id];
+        return $this->banco->executar($sql, $param);
     }
 
-    // Participar de desafio
-    public function participar($idUsuario, $idDesafio) {
-        $stmt = $this->conn->prepare("INSERT INTO usuario_desafio (id_usuario, id_desafio) VALUES (?, ?)");
-        $stmt->bind_param("ii", $idUsuario, $idDesafio);
-        return $stmt->execute();
+      
+    
+    
+    public function participar($usuarioId, $desafioId) {
+        $sql = "INSERT IGNORE INTO participacoes (usuario_id, desafio_id) VALUES (:usuario_id, :desafio_id)";
+        $param = [
+            ':usuario_id' => $usuarioId,
+            ':desafio_id' => $desafioId
+        ];
+        return $this->banco->executar($sql, $param);
     }
 
-    // Registrar progresso do usuário
-    public function registrarProgresso($idUsuario, $idDesafio, $progresso) {
-        $stmt = $this->conn->prepare("INSERT INTO progresso (id_usuario, id_desafio, progresso) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $idUsuario, $idDesafio, $progresso);
-        return $stmt->execute();
+    public function verificarParticipacao($usuarioId, $desafioId) {
+        $sql = "SELECT id FROM participacoes WHERE usuario_id = :usuario_id AND desafio_id = :desafio_id";
+        $param = [
+            ':usuario_id' => $usuarioId,
+            ':desafio_id' => $desafioId
+        ];
+        $resultado = $this->banco->executar($sql, $param);
+        return !empty($resultado);
+    }
+
+    public function listarComParticipacao($usuarioId) {
+        $sql = "SELECT d.*, 
+                       (CASE WHEN p.id IS NOT NULL THEN 1 ELSE 0 END) as participante
+                FROM desafios d
+                LEFT JOIN participacoes p ON d.id = p.desafio_id AND p.usuario_id = :usuario_id";
+        $param = [':usuario_id' => $usuarioId];
+        return $this->banco->executar($sql, $param);
     }
 }

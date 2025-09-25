@@ -1,61 +1,41 @@
 <?php
 namespace service;
 
+use dao\mysql\DesafioDAO;
+
 class DesafioService {
-    // Simulação de armazenamento (substitua por DAO depois)
-    private $desafios = [];
+    
+    private $desafioDAO;
 
     public function __construct() {
-        // Exemplo de desafios iniciais
-        $this->desafios = [
-            ["id" => 1, "titulo" => "Desafio Corrida", "descricao" => "Corra 5km por dia", "nivel" => "Intermediário"],
-            ["id" => 2, "titulo" => "Desafio Flexão", "descricao" => "100 flexões em 1 semana", "nivel" => "Avançado"],
-        ];
+        $this->desafioDAO = new DesafioDAO();
     }
 
-    // Listar todos os desafios
-    public function listarTodos() {
-        return $this->desafios;
+    public function listarDesafios() {
+        return $this->desafioDAO->listarTodos();
     }
 
-    // Criar novo desafio
-    public function salvar($dados) {
-        $novoId = count($this->desafios) + 1;
-        $dados['id'] = $novoId;
-        $this->desafios[] = $dados;
-        return $dados;
+    public function salvarDesafio($dados) {
+        // Aqui poderiam entrar regras de negócio, como validações.
+        return $this->desafioDAO->salvar($dados);
     }
 
-    // Buscar desafio por ID
-    public function listarId($id) {
-        foreach ($this->desafios as $desafio) {
-            if ($desafio['id'] == $id) {
-                return $desafio;
-            }
-        }
-        return null;
+    public function listarDesafioPorId($id) {
+        return $this->desafioDAO->listarId($id);
     }
 
-    // Excluir desafio
-    public function excluir($id) {
-        foreach ($this->desafios as $i => $desafio) {
-            if ($desafio['id'] == $id) {
-                unset($this->desafios[$i]);
-                return true;
-            }
-        }
-        return false;
+    public function excluirDesafio($id) {
+        return $this->desafioDAO->excluir($id);
     }
 
-    // Participar de desafio (simples)
-    public function participar($idUsuario, $idDesafio) {
-        // Aqui você pode implementar lógica de associação usuário-desafio
-        return true;
+
+
+     public function listarDesafiosParaUsuario($usuarioId) {
+        return $this->desafioDAO->listarComParticipacao($usuarioId);
     }
 
-    // Registrar progresso do usuário
-    public function registrarProgresso($idUsuario, $idDesafio, $progresso) {
-        // Aqui você pode implementar lógica de registro de progresso
-        return true;
+    public function participarDesafio($usuarioId, $desafioId) {
+        // A regra de negócio (não participar duas vezes) é tratada pelo "INSERT IGNORE" no DAO
+        return $this->desafioDAO->participar($usuarioId, $desafioId);
     }
 }

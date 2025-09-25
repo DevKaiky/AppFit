@@ -1,60 +1,42 @@
+<?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
+    <a href="index.php?param=Desafio/formulario">Criar Novo Desafio</a>
+<?php endif; ?>
+
+<table border="1" width="100%" style="margin-top: 15px; border-collapse: collapse;">
+    <tr style="background-color: #f2f2f2;">
+        <th style="padding: 8px;">Título</th>
+        <th style="padding: 8px;">Descrição</th>
+        <th style="padding: 8px;">Nível</th>
+        <th style="padding: 8px;">Ações</th>
+    </tr>
 <?php
-use dao\mysql\DesafioDAO;
+if (!empty($parametro)) {
+    foreach ($parametro as $desafio) {
+    ?>
+     <tr>
+     <td style="padding: 8px;"><?= htmlspecialchars($desafio['titulo']) ?></td>
+     <td style="padding: 8px;"><?= htmlspecialchars($desafio['descricao']) ?></td>
+     <td style="padding: 8px;"><?= htmlspecialchars($desafio['nivel']) ?></td>
+     <td style="padding: 8px;">
+        <?php
+        if ($desafio['participante'] == 1):
+        ?>
+            <span style="color: green; font-weight: bold;">A participar</span>
+        <?php else: ?>
+            <a href='index.php?param=Desafio/participar&id=<?= $desafio['id'] ?>'>Participar</a>
+        <?php endif; ?>
 
-// Exemplo de conexão MySQLi (ajuste para seu ambiente)
-$conn = new mysqli('localhost', 'usuario', 'senha', 'appfit');
-if ($conn->connect_error) {
-    die('Erro de conexão: ' . $conn->connect_error);
+        <?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
+            | <a href='index.php?param=Desafio/formulario&id=<?= $desafio['id'] ?>'>Alterar</a>
+            | <a href='index.php?param=Desafio/excluir&id=<?= $desafio['id'] ?>' onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
+        <?php endif; ?>
+     </td>
+     </tr>
+    <?php
+    }
+} else {
+    echo "<tr><td colspan='4' style='padding: 8px; text-align: center;'>Nenhum desafio encontrado.</td></tr>";
 }
-
-$desafioDAO = new DesafioDAO($conn);
-$desafios = $desafioDAO->listarTodos();
 ?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Listar Desafios</title>
-    <link rel="stylesheet" href="/public/styles.css">
-</head>
-<body>
-    <h1>Desafios</h1>
-    <a href="formulario.php" class="btn">Novo Desafio</a>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Descrição</th>
-                <th>Nível</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($desafios as $desafio): ?>
-                <tr>
-                    <td><?= htmlspecialchars($desafio['id']) ?></td>
-                    <td><?= htmlspecialchars($desafio['titulo']) ?></td>
-                    <td><?= htmlspecialchars($desafio['descricao']) ?></td>
-                    <td><?= htmlspecialchars($desafio['nivel']) ?></td>
-                    <td>
-                        <a href="formulario.php?id=<?= $desafio['id'] ?>">Editar</a> |
-                        <a href="listar.php?id=<?= $desafio['id'] ?>">Visualizar</a> |
-                        <a href="excluir.php?id=<?= $desafio['id'] ?>" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</a> |
-                        <form method="post" action="participar.php" style="display:inline">
-                            <input type="hidden" name="idDesafio" value="<?= $desafio['id'] ?>">
-                            <button type="submit">Participar</button>
-                        </form> |
-                        <form method="post" action="progresso.php" style="display:inline">
-                            <input type="hidden" name="idDesafio" value="<?= $desafio['id'] ?>">
-                            <input type="text" name="progresso" placeholder="Progresso" required>
-                            <button type="submit">Registrar Progresso</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</body>
-</html>
-<?php $conn->close(); ?>
+</table>
+

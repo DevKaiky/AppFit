@@ -33,8 +33,10 @@ class AuthController {
             session_start();
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_nome'] = $usuario['nome'];
+            $_SESSION['usuario_tipo'] = $usuario['tipo']; 
             
-            header("Location: index.php?param=Usuario/listar"); // Pode mudar para a lista de desafios no futuro
+            // Redireciona para a lista de desafios, que é a página principal para todos
+            header("Location: index.php?param=Desafio/listar");
             exit;
         } else {
             header("Location: index.php?param=Auth/mostrarFormularioLogin&erro=2");

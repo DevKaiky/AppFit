@@ -17,18 +17,25 @@ class UsuarioTemp implements ITemplate {
         
         echo "<nav>";
         if (isset($_SESSION['usuario_id'])) {
+            // Menu para utilizadores logados
             echo "<div>";
-            echo "<a href='index.php?param=Usuario/listar'>Gerenciar Usuários</a>";
-            // echo "<a href='index.php?param=Desafio/listar'>Ver Desafios</a>";
+            echo "<a href='index.php?param=Desafio/listar'>Ver Desafios</a>";
             echo "</div>";
 
             echo "<div class='user-info'>";
             echo "<span>Olá, " . htmlspecialchars($_SESSION['usuario_nome']) . "!</span>";
+            
+            // Mostra o link do painel admin APENAS se o utilizador for 'admin'
+            if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin') {
+                echo "<a href='index.php?param=Admin/dashboard'>Painel Admin</a>";
+            }
+            
             echo "<a href='index.php?param=Usuario/perfil'>Meu Perfil</a>";
             echo "<a href='index.php?param=Auth/logout'>Logout</a>";
             echo "</div>";
         } 
         else {
+            // Menu para visitantes
             echo "<div>";
             echo "<a href='index.php?param=Auth/mostrarFormularioLogin'>Login</a>";
             echo "<a href='index.php?param=Usuario/formulario'>Cadastre-se</a>";
@@ -43,10 +50,14 @@ class UsuarioTemp implements ITemplate {
         echo "</main><footer><p style='text-align:center; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;'>&copy; 2025 - Meu App Fitness</p></footer>";
         echo "</body></html>";
     }
+    
     public function layout($pagina, $dados = null) {
         $this->cabecalho();
         $parametro = $dados;
-        include $_SERVER['DOCUMENT_ROOT'] . "\\mvc20251".$pagina; // ATENÇÃO: ajuste o caminho se necessário
+        // Corrigido para ser mais robusto em diferentes sistemas operativos
+        $caminhoCorrigido = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $pagina);
+        include __DIR__ . '/..' . $caminhoCorrigido;
         $this->rodape();
     }
 }
+
