@@ -24,6 +24,8 @@ class Controller {
             'Admin/dashboard' => new Acao('AdminController', 'dashboard'),
             'Admin/Usuario/listar' => new Acao('AdminUsuarioController', 'listar'),
             'Admin/Usuario/excluir' => new Acao('AdminUsuarioController', 'excluir'),
+            'Admin/Usuario/formulario' => new Acao('AdminUsuarioController', 'formulario'), 
+            'Admin/Usuario/salvar' => new Acao('AdminUsuarioController', 'salvar'),    
         ];
     }
 
