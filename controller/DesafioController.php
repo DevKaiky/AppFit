@@ -22,7 +22,8 @@ class DesafioController {
     }
 
     public function listar() {
-        $desafios = $this->service->listarDesafios();
+    // Devemos chamar o método que sabe quem é o utilizador logado
+        $desafios = $this->service->listarDesafiosParaUsuario($_SESSION['usuario_id']);
         $this->template->layout("\\public\\desafio\\listar.php", $desafios);
     }
 
