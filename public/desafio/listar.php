@@ -21,7 +21,9 @@ if (!empty($parametro)) {
         <?php
         if ($desafio['participante'] == 1):
         ?>
-            <span style="color: green; font-weight: bold;">A participar</span>
+            
+            <a href="index.php?param=Desafio/detalhes&id=<?= $desafio['id'] ?>" style="color: green; font-weight: bold;">Ver Progresso</a>
+        <a href='index.php?param=Desafio/cancelarParticipacao&id=<?= $desafio['id'] ?>' onclick="return confirm('Todo seu progresso nesse desafio sera perdido, tem certeza que deseja cancelar a participação neste desafio?')" style="color: red;">Cancelar</a>
         <?php else: ?>
             <a href='index.php?param=Desafio/participar&id=<?= $desafio['id'] ?>'>Participar</a>
         <?php endif; ?>
@@ -35,7 +37,7 @@ if (!empty($parametro)) {
     <?php
     }
 } else {
-    echo "<tr><td colspan='4' style='padding: 8px; text-align: center;'>Nenhum desafio encontrado.</td></tr>";
+    echo "<tr><td colspan='4' style='padding: 8px; text-align: center;'>Nenhum desafio encontrado. Crie um no painel de administração.</td></tr>";
 }
 ?>
 </table>

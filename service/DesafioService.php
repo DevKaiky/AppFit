@@ -16,7 +16,7 @@ class DesafioService {
     }
 
     public function salvarDesafio($dados) {
-        // Aqui poderiam entrar regras de negócio, como validações.
+        
         return $this->desafioDAO->salvar($dados);
     }
 
@@ -35,7 +35,42 @@ class DesafioService {
     }
 
     public function participarDesafio($usuarioId, $desafioId) {
-        // A regra de negócio (não participar duas vezes) é tratada pelo "INSERT IGNORE" no DAO
+      
         return $this->desafioDAO->participar($usuarioId, $desafioId);
     }
+
+     public function registrarProgresso($usuarioId, $desafioId, $observacao) {
+        // Primeiro, obtemos o ID da participação
+        $participacaoId = $this->desafioDAO->getParticipacaoId($usuarioId, $desafioId);
+
+        if ($participacaoId) {
+            return $this->desafioDAO->registrarProgresso($participacaoId, $observacao);
+        }
+        return false;
+    }
+
+    public function listarProgressos($usuarioId, $desafioId) {
+        $participacaoId = $this->desafioDAO->getParticipacaoId($usuarioId, $desafioId);
+
+        if ($participacaoId) {
+            return $this->desafioDAO->listarProgressos($participacaoId);
+        }
+        return []; // Retorna um array vazio se não houver participação
+    }
+    public function listarDesafiosComContagem() {
+        return $this->desafioDAO->listarComContagemDeParticipantes();
+    }
+
+     public function cancelarParticipacao($usuarioId, $desafioId) {
+        return $this->desafioDAO->cancelarParticipacao($usuarioId, $desafioId);
+    }
+
+    public function atualizarProgresso($progressoId, $observacao) {
+        return $this->desafioDAO->atualizarProgresso($progressoId, $observacao);
+    }
+
+    public function excluirProgresso($progressoId) {
+        return $this->desafioDAO->excluirProgresso($progressoId);
+    }
+
 }

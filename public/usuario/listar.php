@@ -7,6 +7,7 @@
         <th style="padding: 8px;">Ações</th>
     </tr>
 <?php
+
 if (!empty($parametro)) {
     foreach ($parametro as $usuario) {
     ?>
@@ -15,7 +16,8 @@ if (!empty($parametro)) {
      <td style="padding: 8px;"><?= htmlspecialchars($usuario['nome']) ?></td>
      <td style="padding: 8px;"><?= htmlspecialchars($usuario['email']) ?></td>
      <td style="padding: 8px;"><?= htmlspecialchars($usuario['tipo']) ?></td>
-
+     
+     
      <td style="padding: 8px;">
         <a href='index.php?param=Admin/Usuario/formulario&id=<?= $usuario['id'] ?>'>Alterar</a>
         | <a href='index.php?param=Admin/Usuario/excluir&id=<?= $usuario['id'] ?>' onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
@@ -24,7 +26,9 @@ if (!empty($parametro)) {
     <?php
     }
 } else {
+    
     echo "<tr><td colspan='5' style='padding: 8px; text-align: center;'>Nenhum usuário encontrado.</td></tr>";
 }
 ?>
 </table>
+

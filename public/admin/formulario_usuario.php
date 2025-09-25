@@ -1,5 +1,5 @@
 <?php
-$usuario = ($parametro != null) ? $parametro[0] : null;
+$usuario = $parametro;
 ?>
 
 <h2>Editar Utilizador (Admin)</h2>

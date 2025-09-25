@@ -15,17 +15,17 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioService {
     }
     
     public function inserir($dados){
-        $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)";
+        $sql = "INSERT INTO usuarios (nome, email, senha, tipo) VALUES (:nome, :email, :senha, :tipo)";
         $param = [
             ':nome' => $dados['nome'], 
             ':email' => $dados['email'],
-            ':senha' => $dados['senha']
+            ':senha' => $dados['senha'],
+            ':tipo' => $dados['tipo'] ?? 'user'
         ];
         return $this->banco->executar($sql, $param);
     }
 
     public function alterar($dados){
-        // Inicia a query base
         $sql = "UPDATE usuarios SET nome = :nome, email = :email";
         $param = [
             ':id' => $dados['id'], 
@@ -33,13 +33,11 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioService {
             ':email' => $dados['email']
         ];
         
-        // Adiciona a atualização da senha se ela for fornecida
         if (!empty($dados['senha'])) {
             $sql .= ", senha = :senha";
             $param[':senha'] = $dados['senha'];
         }
 
-        // Adiciona a atualização do tipo se ele for fornecido (ação do admin)
         if (isset($dados['tipo'])) {
             $sql .= ", tipo = :tipo";
             $param[':tipo'] = $dados['tipo'];
@@ -51,16 +49,20 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioService {
     }
     
     public function listar(){
-    
+        
         $sql = "SELECT id, nome, email, tipo, data_criacao FROM usuarios";
         return $this->banco->executar($sql);
     }
 
-    public function listarId($id){
-
+     public function listarId($id){
         $sql = "SELECT id, nome, email, tipo, data_criacao FROM usuarios WHERE id = :id";
         $param = [':id' => $id];
-        return $this->banco->executar($sql, $param);
+        $resultado = $this->banco->executar($sql, $param);
+        
+        
+        // Se encontrar um resultado, retorna apenas a primeira (e única) linha.
+        // Caso contrário, retornamos false.
+        return $resultado ? $resultado[0] : false;
     }
     
     public function buscarPorEmail($email){
@@ -76,3 +78,4 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioService {
         return $this->banco->executar($sql, $param);
     }
 }
+

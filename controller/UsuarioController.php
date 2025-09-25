@@ -25,14 +25,12 @@ class UsuarioController {
     // formulário de cadastro, salvar e ver/editar o próprio perfil.
 
     public function formulario() {
-        // Este formulário agora é apenas para CADASTRO por utilizadores não logados.
-        // A edição será feita no perfil.
+      
         $this->template->layout("\\public\\usuario\\formulario.php");
     }
     
     public function salvar() {
-        // Lógica de salvar continua praticamente a mesma,
-        // mas agora é usada para cadastro e para o próprio perfil.
+      
         $dados = [
             'id' => filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT),
             'nome' => $_POST['nome'] ?? '',
@@ -40,7 +38,7 @@ class UsuarioController {
             'senha' => $_POST['senha']
         ];
 
-        // Validação e lógica de salvar...
+        // Validação e lógica de salvar
         if (empty($dados['id']) && empty($dados['senha'])) {
             die("Erro: A senha é obrigatória para cadastrar um novo usuário.");
         }

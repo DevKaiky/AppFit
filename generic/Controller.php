@@ -1,6 +1,6 @@
 <?php
 namespace generic;
-
+use generic\Acao;
 class Controller {
     private $arrChamadas = [];
     public function __construct() {
@@ -19,6 +19,12 @@ class Controller {
             'Desafio/salvar' => new Acao('DesafioController', 'salvar'),
             'Desafio/excluir' => new Acao('DesafioController', 'excluir'),
             'Desafio/participar' => new Acao('DesafioController', 'participar'),
+            'Desafio/detalhes' => new Acao('DesafioController', 'detalhes'),
+            'Desafio/registrarProgresso' => new Acao('DesafioController', 'registrarProgresso'),
+            'Desafio/cancelarParticipacao' => new Acao('DesafioController', 'cancelarParticipacao'),
+            'Desafio/formularioProgresso' => new Acao('DesafioController', 'formularioProgresso'),
+            'Desafio/atualizarProgresso' => new Acao('DesafioController', 'atualizarProgresso'),
+            'Desafio/excluirProgresso' => new Acao('DesafioController', 'excluirProgresso'),
 
             // --- ROTAS DE ADMINISTRAÇÃO ---
             'Admin/dashboard' => new Acao('AdminController', 'dashboard'),

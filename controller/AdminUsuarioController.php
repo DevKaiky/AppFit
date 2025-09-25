@@ -10,7 +10,6 @@ class AdminUsuarioController {
     private UsuarioService $service;
 
     public function __construct() {
-        // Protege TODAS as ações de administração de utilizadores
         if (!isset($_SESSION['usuario_tipo']) || $_SESSION['usuario_tipo'] !== 'admin') {
             header('Location: index.php?param=Desafio/listar');
             exit;
@@ -19,30 +18,26 @@ class AdminUsuarioController {
         $this->service = new UsuarioService();
     }
 
-    // Métodos que antes estavam no UsuarioController
     public function listar() {
         $resultado = $this->service->listarUsuarios();
-        $this->template->layout("\\public\\usuario\\listar.php"); // Reutilizamos a mesma view
+        $this->template->layout("\\public\\usuario\\listar.php", $resultado);
     }
-
     
     public function formulario() {
         $dados = null;
         if (isset($_GET['id'])) {
             $dados = $this->service->listarUsuarioPorId($_GET['id']);
         }
-        // Usa uma nova view de formulário específica para o admin
         $this->template->layout("\\public\\admin\\formulario_usuario.php", $dados);
     }
 
-    
     public function salvar() {
         $dados = [
             'id' => filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT),
             'nome' => $_POST['nome'] ?? '',
             'email' => filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL),
             'senha' => $_POST['senha'],
-            'tipo' => filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS) // Permite ao admin mudar o tipo
+            'tipo' => filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
         if (!empty($dados['id']) && empty($dados['senha'])) {
@@ -52,8 +47,8 @@ class AdminUsuarioController {
         $this->service->salvarUsuario($dados);
         header("Location: index.php?param=Admin/Usuario/listar");
         exit;
-    }   
-    
+    }
+
     public function excluir(){
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
         if ($id) {

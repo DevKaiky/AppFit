@@ -1,0 +1,167 @@
+/* --- VARIAVEIS GLOBAIS --- */
+:root {
+    --cor-primaria: #007bff;
+    --cor-secundaria: #6c757d;
+    --cor-sucesso: #28a745;
+    --cor-perigo: #dc3545;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #343a40;
+    --cor-branco: #ffffff;
+    --sombra-caixa: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --borda-radius: 8px;
+}
+
+/* --- ESTILOS GERAIS --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* --- CABEÇALHO E NAVEGAÇÃO --- */
+header h1 {
+    text-align: center;
+    color: var(--cor-primaria);
+    margin: 20px 0;
+}
+
+nav {
+    background-color: var(--cor-branco);
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: var(--sombra-caixa);
+}
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--cor-secundaria);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+nav a:hover {
+    color: var(--cor-primaria);
+}
+
+/* --- TABELAS --- */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: var(--cor-branco);
+    box-shadow: var(--sombra-caixa);
+    border-radius: var(--borda-radius);
+    overflow: hidden;
+}
+th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dee2e6;
+    text-align: left;
+}
+th {
+    background-color: var(--cor-fundo);
+    font-weight: 600;
+}
+tr:last-child td {
+    border-bottom: none;
+}
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* --- FORMULÁRIOS --- */
+form {
+    background-color: var(--cor-branco);
+    padding: 25px;
+    border-radius: var(--borda-radius);
+    box-shadow: var(--sombra-caixa);
+    max-width: 600px;
+    margin: 20px auto;
+}
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+form input[type="submit"], .btn {
+    background-color: var(--cor-primaria);
+    color: var(--cor-branco);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+form input[type="submit"]:hover, .btn:hover {
+    background-color: #0056b3;
+}
+.btn-perigo {
+    background-color: var(--cor-perigo);
+}
+.btn-perigo:hover {
+    background-color: #c82333;
+}
+.btn-sucesso {
+    background-color: var(--cor-sucesso);
+}
+.btn-sucesso:hover {
+    background-color: #218838;
+}
+
+/* --- CARTÕES (PARA DESAFIOS) --- */
+.desafios-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+.card {
+    background-color: var(--cor-branco);
+    border-radius: var(--borda-radius);
+    box-shadow: var(--sombra-caixa);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.card h3 {
+    margin-top: 0;
+    color: var(--cor-primaria);
+}
+.card .nivel {
+    font-weight: bold;
+    color: var(--cor-secundaria);
+    margin-bottom: 10px;
+}
+.card .acoes {
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* --- PÁGINA DE DETALHES --- */
+.detalhes-desafio {
+    background-color: var(--cor-branco);
+    padding: 25px;
+    border-radius: var(--borda-radius);
+    box-shadow: var(--sombra-caixa);
+}

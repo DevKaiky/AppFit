@@ -31,11 +31,13 @@ class AuthController {
 
         if ($usuario) {
             session_start();
-            $_SESSION['usuario_id'] = $usuario['id'];
+            
+        
+            $_SESSION['usuario_id'] = (int) $usuario['id'];
+            
             $_SESSION['usuario_nome'] = $usuario['nome'];
             $_SESSION['usuario_tipo'] = $usuario['tipo']; 
             
-            // Redireciona para a lista de desafios, que é a página principal para todos
             header("Location: index.php?param=Desafio/listar");
             exit;
         } else {
@@ -51,3 +53,4 @@ class AuthController {
         exit;
     }
 }
+

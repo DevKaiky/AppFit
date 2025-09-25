@@ -1,12 +1,13 @@
 <?php
-$usuario = ($parametro != null) ? $parametro[0] : null;
+
+$usuario = $parametro;
 ?>
 
 <h2>Meu Perfil</h2>
 
 <?php
 if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
-    echo '<p style="color: green;">Seu perfil foi atualizado com sucesso!</p>';
+    echo '<p style="color: green;">O seu perfil foi atualizado com sucesso!</p>';
 }
 ?>
 
@@ -28,3 +29,4 @@ if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
 
     <input type="submit" value="Salvar Alterações">
 </form>
+
