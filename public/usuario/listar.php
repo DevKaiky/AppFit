@@ -15,6 +15,7 @@ if (!empty($parametro)) {
      <td style="padding: 8px;"><?= htmlspecialchars($usuario['nome']) ?></td>
      <td style="padding: 8px;"><?= htmlspecialchars($usuario['email']) ?></td>
      <td style="padding: 8px;"><?= htmlspecialchars($usuario['tipo']) ?></td>
+
      <td style="padding: 8px;">
         <a href='index.php?param=Admin/Usuario/formulario&id=<?= $usuario['id'] ?>'>Alterar</a>
         | <a href='index.php?param=Admin/Usuario/excluir&id=<?= $usuario['id'] ?>' onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>

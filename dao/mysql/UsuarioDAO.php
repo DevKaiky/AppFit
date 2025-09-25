@@ -25,27 +25,40 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioService {
     }
 
     public function alterar($dados){
-        $sql = "UPDATE usuarios SET nome = :nome, email = :email WHERE id = :id";
+        // Inicia a query base
+        $sql = "UPDATE usuarios SET nome = :nome, email = :email";
         $param = [
             ':id' => $dados['id'], 
             ':nome' => $dados['nome'],
             ':email' => $dados['email']
         ];
-        // Se uma nova senha foi fornecida, atualiza também
-        if (isset($dados['senha'])) {
-            $sql = "UPDATE usuarios SET nome = :nome, email = :email, senha = :senha WHERE id = :id";
+        
+        // Adiciona a atualização da senha se ela for fornecida
+        if (!empty($dados['senha'])) {
+            $sql .= ", senha = :senha";
             $param[':senha'] = $dados['senha'];
         }
+
+        // Adiciona a atualização do tipo se ele for fornecido (ação do admin)
+        if (isset($dados['tipo'])) {
+            $sql .= ", tipo = :tipo";
+            $param[':tipo'] = $dados['tipo'];
+        }
+
+        $sql .= " WHERE id = :id";
+        
         return $this->banco->executar($sql, $param);
     }
     
     public function listar(){
-        $sql = "SELECT id, nome, email, data_criacao FROM usuarios";
+    
+        $sql = "SELECT id, nome, email, tipo, data_criacao FROM usuarios";
         return $this->banco->executar($sql);
     }
 
     public function listarId($id){
-        $sql = "SELECT id, nome, email, data_criacao FROM usuarios WHERE id = :id";
+
+        $sql = "SELECT id, nome, email, tipo, data_criacao FROM usuarios WHERE id = :id";
         $param = [':id' => $id];
         return $this->banco->executar($sql, $param);
     }
